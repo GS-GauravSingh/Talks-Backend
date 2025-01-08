@@ -1,0 +1,36 @@
+{
+  "name": "talks-backend",
+  "version": "1.0.0",
+  "description": "Talks is a real-time chatting web-application built using MERN stack.",
+  "homepage": "https://github.com/GS-GauravSingh/Talks-Backend#readme",
+  "bugs": {
+    "url": "https://github.com/GS-GauravSingh/Talks-Backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GS-GauravSingh/Talks-Backend.git"
+  },
+  "license": "ISC",
+  "author": "Gaurav Singh",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "hpp": "^0.2.3",
+    "mongoose": "^8.9.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

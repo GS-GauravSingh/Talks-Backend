@@ -1,0 +1,19 @@
+# Ignore artifacts: 
+build
+coverage
+dist
+
+# Ignore all HTML files:
+# **/*.html 
+
+# Ignore package.json file 
+package.json
+package-lock.json
+
+# Ignore node_modules and local environment files
+node_modules
+.env
+.env.sample
+
+# Ignore configuration files 
+*.config.js
