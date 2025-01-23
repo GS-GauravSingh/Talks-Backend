@@ -10,7 +10,7 @@ const helmet = require("helmet"); // middleware used to set various http headers
 
 const hpp = require("hpp"); // middleware used to protect express application from HTTP parameter pollution attacks.
 
-const morgan = require("morgan"); // middlewrae used to log details about incoming HTTP requests - specially used fo debugging and monitoring purposes.
+const morgan = require("morgan"); // middleware used to log details about incoming HTTP requests - specially used fo debugging and monitoring purposes.
 
 const cookieParser = require("cookie-parser"); // middleware used to parse cookies and populate `req.cookies` with an object keyed by cookie names.
 
@@ -21,6 +21,8 @@ const limiter = expressRateLimit({
     message:
         "Too many requests from this IP address, please try again in an hour.",
 });
+
+const globalErrorHandlingMiddleware = require("./middlewares/globalErrorHandlingMiddleware"); // global error handling middleware.
 
 // Initializing `app`.
 const app = express();
@@ -51,5 +53,8 @@ app.use("/api", limiter); // applying rate limiter to API's that start with `/ap
 app.get("/", function (req, res) {
     return res.send("Hello from server!!");
 });
+
+
+app.use(globalErrorHandlingMiddleware); // middlewares executes in all, If any middleware call the global error handling middleware, express will skip all the middleware in the middleware stack and directly move to the global error handling middleware.
 
 module.exports = app;

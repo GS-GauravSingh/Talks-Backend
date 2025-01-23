@@ -28,7 +28,10 @@
     "helmet": "^8.0.0",
     "hpp": "^0.2.3",
     "mongoose": "^8.9.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.16",
+    "otp-generator": "^4.0.1",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

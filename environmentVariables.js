@@ -5,6 +5,9 @@ dotenv.config();
 
 const environmentVariables = {
     PORT: process.env.PORT || "8000",
+    MONGO_DB_URL: process.env.MONGO_DB_URL,
+    NODEMAILER_USER_EMAIL: process.env.NODEMAILER_USER_EMAIL,
+    NODEMAILER_USER_EMAIL_PASSWORD: process.env.NODEMAILER_USER_EMAIL_PASSWORD,
 };
 
 module.exports = environmentVariables;

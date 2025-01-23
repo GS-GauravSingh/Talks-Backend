@@ -12,6 +12,7 @@ class ApiError extends Error {
         super(message);
 
         this.statusCode = statusCode; // HTTP status code.
+        this.status = statusCode >= 400 && statusCode < 500 ? "Client Error" : "Internal Server Error";
         this.data = null; // data property is used to provide any additional information associated with the error.
         this.message = message; // error message.
         this.success = false; // success is set to false because this class is used to handle errors and if there is any error then `success` has to be false.
