@@ -8,6 +8,7 @@ const environmentVariables = {
     MONGO_DB_URL: process.env.MONGO_DB_URL,
     NODEMAILER_USER_EMAIL: process.env.NODEMAILER_USER_EMAIL,
     NODEMAILER_USER_EMAIL_PASSWORD: process.env.NODEMAILER_USER_EMAIL_PASSWORD,
+    JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
 };
 
 module.exports = environmentVariables;

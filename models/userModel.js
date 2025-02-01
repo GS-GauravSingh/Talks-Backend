@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
+const validator = require("validator"); // for email validation.
+const bcrypt = require("bcrypt"); // `bcrypt` npm package for password hashing.
 
 // Creating User Schema
 const userSchema = new mongoose.Schema(
@@ -66,6 +67,69 @@ const userSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+/*
+Mongoose allows us to define middleware (also called pre (pre means before) and post (post means after) hooks) that run before or after certain operations on Mongoose documents, queries, aggregates, or models. One common use case is hashing a password before storing it in the database.
+*/
+
+// Now, I'm going to hash the user's password beforing storing in into the database. So, we have to perform an operation before the data gets stored in the database. We have to use `pre` middleware.
+userSchema.pre("save", async function (next) {
+    // isModified("fieldName") → Checks if a specific field is modified or not. It returns true when provided field is modified. Otheriwise it return false.
+    if (!this.isModified("password") || !this.password) {
+        return;
+    }
+
+    // Using `bcrypt` npm package for hashing password.
+    // salt rounds means how many times we perform this hashing process. More rounds means more security by scrambling the information forther, altough at the cost of more computing power. Recommended value is 10.
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(this.password, saltRounds);
+    this.password = hashedPassword;
+    next(); // calling the next middleware.
+});
+
+// Now, I'm going to hash the user's OTP beforing storing in into the database. So, we have to perform an operation before the data gets stored in the database. We have to use `pre` middleware.
+userSchema.pre("save", async function (next) {
+    // isModified("fieldName") → Checks if a specific field is modified or not. It returns true when provided field is modified. Otheriwise it return false.
+    if (!this.isModified("otp") || !this.otp) {
+        return;
+    }
+
+    // Using `bcrypt` npm package for hashing OTP.
+    // salt rounds means how many times we perform this hashing process. More rounds means more security by scrambling the information forther, altough at the cost of more computing power. Recommended value is 10.
+    const saltRounds = 10;
+    const hashedOTP = await bcrypt.hash(this.otp, saltRounds);
+    this.otp = hashedOTP;
+    next(); // calling the next middleware.
+});
+
+/*
+Mongoose schema methods allow you to define custom instance methods that can be called on documents.
+*/
+userSchema.methods.comparePassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.compareOTP = async function (enteredOTP) {
+    return await bcrypt.compare(enteredOTP, this.otp);
+};
+
+userSchema.methods.isTokenValid = function(jwtTimestamp){
+    if(this.passwordChangedAt)
+    {
+        // JWT Timestamps (`exp`, `iat`) are in seconds, whereas, `Date.now()` represents time in milliseconds.
+        // So to compare both of them together, you can either convert JWT Timestamps to milliseconds or convert `Date.now()` into seconds.
+
+        // Converting `Date.now()` into seconds.
+        // To convert time in milliseconds into second, we just have to divide the time by 1000, because in 1 second we have 1000 milliseconds.
+        const changedTimeStamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
+
+        // If the token was issued after password change, then it is a valid token. Otherwise, if the token was issued before the password changed, then it is invalid token.
+        return jwtTimestamp > changedTimeStamp; 
+    }
+
+    // if the field `passwordChangedAt` is empty, it means user haven't changed the password after the token was issued.
+    return true;
+}
 
 // Creating a model using User Schema.
 const userModel = mongoose.model("User", userSchema);
