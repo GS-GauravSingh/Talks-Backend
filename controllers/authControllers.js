@@ -365,3 +365,13 @@ const isUserAuthorized = asyncHandler(async (req, res, next) => {
     req.user = user;
     next(); // calling the next middleware.
 });
+
+module.exports = {
+    register,
+    sendOTP,
+    verifyOTP,
+    resendOTP,
+    login,
+    logout,
+    isUserAuthorized,
+};

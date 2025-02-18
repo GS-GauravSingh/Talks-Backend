@@ -36,6 +36,25 @@ const userSchema = new mongoose.Schema(
             },
         },
 
+        jobTitle: {
+            type: String,
+        },
+
+        bio: {
+            type: String,
+            trim: true,
+        },
+
+        country: {
+            type: String,
+            trim: true,
+        },
+
+        avatar: {
+            type: String,
+            trim: true,
+        },
+
         password: {
             type: String, // we are going to hash/encrypt the password before storing into the database.
             required: [true, "Password is required."],
@@ -63,6 +82,10 @@ const userSchema = new mongoose.Schema(
             type: String, // used to check whther the user is either online or offline.
             enum: ["ONLINE", "OFFLINE"],
             default: "OFFLINE",
+        },
+
+        socketId: {
+            type: String, // to store the socket Id of the user.
         },
     },
     { timestamps: true }
@@ -113,23 +136,24 @@ userSchema.methods.compareOTP = async function (enteredOTP) {
     return await bcrypt.compare(enteredOTP, this.otp);
 };
 
-userSchema.methods.isTokenValid = function(jwtTimestamp){
-    if(this.passwordChangedAt)
-    {
+userSchema.methods.isTokenValid = function (jwtTimestamp) {
+    if (this.passwordChangedAt) {
         // JWT Timestamps (`exp`, `iat`) are in seconds, whereas, `Date.now()` represents time in milliseconds.
         // So to compare both of them together, you can either convert JWT Timestamps to milliseconds or convert `Date.now()` into seconds.
 
         // Converting `Date.now()` into seconds.
         // To convert time in milliseconds into second, we just have to divide the time by 1000, because in 1 second we have 1000 milliseconds.
-        const changedTimeStamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
+        const changedTimeStamp = Math.floor(
+            this.passwordChangedAt.getTime() / 1000
+        );
 
         // If the token was issued after password change, then it is a valid token. Otherwise, if the token was issued before the password changed, then it is invalid token.
-        return jwtTimestamp > changedTimeStamp; 
+        return jwtTimestamp > changedTimeStamp;
     }
 
     // if the field `passwordChangedAt` is empty, it means user haven't changed the password after the token was issued.
     return true;
-}
+};
 
 // Creating a model using User Schema.
 const userModel = mongoose.model("User", userSchema);

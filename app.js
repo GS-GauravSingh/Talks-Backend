@@ -1,4 +1,5 @@
 const express = require("express");
+const routes = require("./routes");
 
 const cors = require("cors"); // cors package is used to configure CORS.
 
@@ -49,11 +50,8 @@ app.use(expressMongoSanitize());
 
 app.use("/api", limiter); // applying rate limiter to API's that start with `/api`.
 
-// TODO - Add Routes
-app.get("/", function (req, res) {
-    return res.send("Hello from server!!");
-});
-
+// Routes
+app.use(routes);
 
 app.use(globalErrorHandlingMiddleware); // middlewares executes in all, If any middleware call the global error handling middleware, express will skip all the middleware in the middleware stack and directly move to the global error handling middleware.
 
