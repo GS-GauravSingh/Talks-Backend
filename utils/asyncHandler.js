@@ -11,7 +11,7 @@
 // `asyncHandler` is a higher order function, it means it can accept one or more function(s) as an argument and also returns as function.
 const asyncHandlerAsyncAwait = (asyncRequestHandlerFunc) => {
     // Creating a middleware function so that we can get access to the `req`, `res`, `next`, and `err`.
-    return async (res, res, next) => {
+    return async (req, res, next) => {
         // Adding a try-catch block to handle error(s) because this is just a wrapper.
         try {
             // Execute the provided asynchronous function (asyncRequestHandlerFunc) with the Express request, response, and next parameters
