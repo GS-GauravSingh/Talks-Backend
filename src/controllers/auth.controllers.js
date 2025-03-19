@@ -11,6 +11,8 @@ import environmentVariables from "../environmentVariables.js";
 export const register = asyncHandler(async (req, res, next) => {
 	// get the user details from the `req.body`.
 	const { firstname, lastname, email, password } = req.body;
+	console.log(req.body);
+	
 
 	// Simple check: When required fields are missing.
 	if (!firstname || !email || !password) {
@@ -98,6 +100,8 @@ export const sendOTP = asyncHandler(async (req, res, next) => {
 // Verify the OTP sent to the user's email address.
 export const verifyOTP = asyncHandler(async (req, res, next) => {
 	const { email, otp } = req.body;
+	console.log(req.body);
+	
 
 	if (!email || !otp) {
 		throw new CustomError(

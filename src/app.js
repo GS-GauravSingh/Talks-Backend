@@ -30,7 +30,7 @@ const app = express();
 // -------------- Setting Up Middlewares --------------------
 app.use(
 	cors({
-		origin: "*",
+		origin: "http://localhost:5173",
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 		credentials: true, // Allows sending cookies from backend to frontend
 	})
