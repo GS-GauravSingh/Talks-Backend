@@ -75,8 +75,13 @@ const userSchema = new mongoose.Schema(
 
 		status: {
 			type: String,
-			enum: ["ONLINE", "OFFLINE"],
-			default: "OFFLINE",
+			enum: ["Online", "Offline"],
+			default: "Offline",
+		},
+
+		socketId: {
+			type: String,
+			select: false, // this will exclude the socketId field and is not included when retrieving documents unless explicitly requested.
 		},
 	},
 	{ timestamps: true }

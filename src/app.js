@@ -23,6 +23,7 @@ import cookieParser from "cookie-parser";
 // `CORS` is a middleware used to configure the CORS options for express application.
 import cors from "cors";
 import morgan from "morgan";
+import environmentVariables from "./environmentVariables.js";
 
 // -------------- Initializing express `app`. -------------------
 const app = express();
@@ -30,7 +31,7 @@ const app = express();
 // -------------- Setting Up Middlewares --------------------
 app.use(
 	cors({
-		origin: "http://localhost:5173",
+		origin: environmentVariables.FRONTEND_URL,
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 		credentials: true, // Allows sending cookies from backend to frontend
 	})

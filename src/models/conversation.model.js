@@ -11,7 +11,7 @@ const conversationSchema = new mongoose.Schema(
 			},
 		],
 
-		// List of all the messages in a comnversation.
+		// List of all the messages in a conversation.
 		messages: [
 			{
 				type: mongoose.Schema.Types.ObjectId,

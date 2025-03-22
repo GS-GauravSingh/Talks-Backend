@@ -1,7 +1,9 @@
 import ConversationModel from "../models/conversation.model.js";
 import MessageModel from "../models/message.model.js";
+import UserModel from "../models/user.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import cloudinary from "../utils/cloudinary.js";
+import { io } from "../scoketServer.js";
 
 // Send Message
 export const sendMessage = asyncHandler(async function (req, res, next) {
@@ -44,13 +46,17 @@ export const sendMessage = asyncHandler(async function (req, res, next) {
 
 	// add this newly created message to conversation.
 	conversation.messages.push(newMessage);
-	conversation.lastMessage =
-		content || (image ? "[Image]" : giphyUrl ? "[GIF]" : "");
+	// conversation.lastMessage =
+	// 	content || (image ? "[Image]" : giphyUrl ? "[GIF]" : "");
 
 	// save the changes made to conversations.
 	await conversation.save({ validateModifiedOnly: true });
 
-	// TODO: realtime functionality goes here => socket.io.
+	// Send message in real-time, only when the receiver is online => socket.io.
+	const receiver = await UserModel.findById(receiverId).select("+socketId");
+	if (receiver && receiver.status === "Online" && receiver.socketId) {
+		io.to(receiver.socketId).emit("newMessage", newMessage);
+	}
 
 	return res.status(201).json({
 		status: "success",

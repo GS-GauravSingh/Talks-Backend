@@ -1,10 +1,6 @@
-import app from "./app.js";
-import http from "http";
 import environmentVariables from "./environmentVariables.js";
 import connectMongoDB from "./database/database.js";
-
-// Create a Server using the HTTP module, express is built on top of HTTP module.
-const server = http.createServer(app);
+import { server } from "./scoketServer.js";
 
 // PORT on which our server will run.
 const PORT = environmentVariables.PORT;
